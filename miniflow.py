@@ -27,6 +27,19 @@ class Add(Node):
     def forward(self):
         self.value = self.inbound_nodes[0].value + self.inbound_nodes[1].value
 
+class Linear(Node):
+    def __init__(self, inputs, weights, bias):
+        Node.__init__(self, [inputs, weights, bias])
+
+    def forward(self):
+        inputs = self.inbound_nodes[0].value
+        weights = self.inbound_nodes[1].value
+        bias = self.inbound_nodes[2].value
+
+        self.value = bias
+        for x, y in zip(inputs, weights):
+            self.value += x * y 
+
 def topological_sort(feed_dict):
 
     input_nodes = [n for n in feed_dict.keys()]
