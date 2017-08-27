@@ -1,3 +1,5 @@
+import numpy as np
+
 class Node(object):
     def __init__(self, inbound_nodes=[]):
         self.inbound_nodes = inbound_nodes
@@ -28,17 +30,15 @@ class Add(Node):
         self.value = self.inbound_nodes[0].value + self.inbound_nodes[1].value
 
 class Linear(Node):
-    def __init__(self, inputs, weights, bias):
-        Node.__init__(self, [inputs, weights, bias])
+    def __init__(self, X, W, b):
+        Node.__init__(self, [X, W, b])
 
     def forward(self):
-        inputs = self.inbound_nodes[0].value
-        weights = self.inbound_nodes[1].value
-        bias = self.inbound_nodes[2].value
+        X = self.inbound_nodes[0].value
+        W = self.inbound_nodes[1].value
+        b = self.inbound_nodes[2].value
 
-        self.value = bias
-        for x, y in zip(inputs, weights):
-            self.value += x * y 
+        self.value = np.dot(X, W) + b
 
 def topological_sort(feed_dict):
 
